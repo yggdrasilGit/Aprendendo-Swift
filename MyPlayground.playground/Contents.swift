@@ -57,24 +57,45 @@ class Conta {
 
 /// Conta Poupança
 class ContaPoupanca: Conta {
-    var possuiCartaoDebito: Bool = false
+    var possuiCartaoDebito: Bool
     
     /// Solicita um cartão de débito para a conta poupança.
     func solicitarCartaoDeDebito() {
         possuiCartaoDebito = true
         print("O cliente está solicitando cartão de débito")
     }
+    
+    override func sacar(valor: Double){
+        saldo -= valor + 10
+        
+    }
+    
+    init(nome: String  ,possuiCartaoDebito: Bool) {
+        self.possuiCartaoDebito = possuiCartaoDebito
+        super.init(nome: nome)
+    }
 }
 
+// Heranca e
 /// Conta Corrente
 class ContaCorrente: Conta {
     // Pode futuramente ter regras específicas (ex: limite de cheque especial)
+    func solicitarEmprestimo(valor: Double) {
+        guard valor > 0 else {
+            print("Valor de empréstimo inválido!")
+            return
+        }
+        
+        print("O valor do empréstimo solicitado é de \(valor)")
+        super.depositar(valor: valor) // adiciona o valor ao saldo da conta
+    }
 }
+
 
 // MARK: - Exemplo de uso
 
 /// Cria uma conta para Francismar
-var contaFrancismar = ContaPoupanca(nome: "Francismar")
+var contaFrancismar = ContaPoupanca(nome: "Francismar", possuiCartaoDebito: false)
 
 /// Faz um depósito de 200
 contaFrancismar.depositar(valor: 200)
